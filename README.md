@@ -1,10 +1,12 @@
 # iggy.sh
 
+
 **An easy-to-use, easy-to-edit Bash script to build and install Enlightenment 24 on openSUSE Leap :kiss:**
 
-See also [iggy.sh](https://github.com/sensamillion/iggy) (companion script).
+See also [erode.sh](https://github.com/sensamillion/erode) (companion script).
 
 ## Get started
+
 
 First, clone this repository (you need the *git-core* or *git* package installed) from a terminal window:
 
@@ -37,6 +39,7 @@ iggy.sh
 (Use tab completion: Just type *igg* and press Tab)
 
 ### Update local repository
+
 
 Be sure to check for updates at least once a week. In order to do this, change to ~/.iggy/ and run:
 
