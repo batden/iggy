@@ -49,4 +49,4 @@ git pull
 
 That's it.
 
-Mind the cows! cow2 cow2 cow2
+Mind the cows! :cow2: :cow2: :cow2:
