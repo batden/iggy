@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# iggy.sh
+# IGGY.SH
 
 # This Bash script allows you to easily and safely install Enlightenment 24 along with other
 # EFL-based apps, on openSUSE Leap 15.2.
