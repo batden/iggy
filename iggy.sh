@@ -57,7 +57,7 @@ libpng16-compat-devel libtiff-devel libpoppler-devel libspectre-devel libraw-dev
 libudev-devel libmount-devel dbus-1-devel libpulse-devel libsndfile-devel gstreamer-plugins-base-devel \
 check-devel meson cmake openjpeg2-devel harfbuzz-devel Mesa-libGLESv2-devel scim-devel libwebp-devel \
 libxkbcommon-x11-devel wmctrl xdotool cowsay valgrind ddcutil faenza-icon-theme alsa-devel pam-devel \
-libgbm-devel libinput-devel bluez-devel ccache aspell zenity nasm geoclue2-devel libdrm-devel"
+libgbm-devel libinput-devel bluez-devel ccache aspell nasm geoclue2-devel libdrm-devel"
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
