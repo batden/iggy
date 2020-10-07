@@ -606,6 +606,7 @@ do_wl_lnk() {
   sudo ln -sf /usr/include/wayland/wayland-server-protocol.h /usr/include/wayland-server-protocol.h
   sudo ln -sf /usr/include/libinput/libinput.h /usr/include/libinput.h
   sudo ln -sf /usr/include/libxkbcommon/xkbcommon/xkbcommon-compose.h /usr/include/xkbcommon/xkbcommon-compose.h
+  sudo ldconfig
 }
 
 install_now() {
