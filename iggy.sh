@@ -590,7 +590,7 @@ do_lnk() {
 }
 
 do_wl_lnk() {
-  sudo mkdir -P /usr/include/xkbcommon
+  sudo mkdir -p /usr/include/xkbcommon
   sudo ln -sf /usr/include/wayland/wayland-util.h /usr/include/wayland-util.h
   sudo ln -sf /usr/include/wayland/wayland-client-core.h /usr/include/wayland-client-core.h
   sudo ln -sf /usr/include/wayland/wayland-version.h /usr/include/wayland-version.h
