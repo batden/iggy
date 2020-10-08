@@ -596,6 +596,7 @@ do_wl_lnk() {
   sudo ln -sf /usr/include/wayland/wayland-version.h /usr/include/wayland-version.h
   sudo ln -sf /usr/include/wayland/wayland-client.h /usr/include/wayland-client.h
   sudo ln -sf /usr/include/libxkbcommon/xkbcommon/xkbcommon.h /usr/include/xkbcommon/xkbcommon.h
+  sudo ln -sf /usr/include/libxkbcommon/xkbcommon/xkbcommon-x11.h /usr/include/xkbcommon/xkbcommon-x11.h
   sudo ln -sf /usr/include/libxkbcommon/xkbcommon/xkbcommon-names.h /usr/include/xkbcommon/xkbcommon-names.h
   sudo ln -sf /usr/include/wayland/wayland-client-protocol.h /usr/include/wayland-client-protocol.h
   sudo ln -sf /usr/include/wayland/wayland-cursor.h /usr/include/wayland-cursor.h
