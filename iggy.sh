@@ -18,7 +18,7 @@
 # recommend doing a complete uninstall and reinstall of E24 every three weeks or so
 # for an optimal user experience.
 
-# iggy.sh is written and maintained by carlasensa@yahoo.fr and batden@sfr.fr,
+# iggy.sh is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
 # feel free to use this script as you see fit.
 
 # Please consider starring our repositories to show your support: https://github.com/sensamillion
