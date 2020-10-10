@@ -37,7 +37,7 @@ On subsequent runs, open a terminal and simply type:
 iggy.sh
 ```
 
-(Use tab completion: Just type *igg* and press Tab)
+(Use tab completion: Just type *ig* and press Tab)
 
 
 ### Update local repository
