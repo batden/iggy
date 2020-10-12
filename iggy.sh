@@ -58,7 +58,8 @@ libudev-devel libmount-devel dbus-1-devel libpulse-devel libsndfile-devel gstrea
 check-devel meson cmake openjpeg2-devel harfbuzz-devel Mesa-libGLESv2-devel scim-devel libwebp-devel \
 libxkbcommon-x11-devel wmctrl xdotool cowsay valgrind ddcutil faenza-icon-theme alsa-devel pam-devel \
 libgbm-devel libinput-devel bluez-devel ccache aspell nasm geoclue2-devel libdrm-devel \
-xorg-x11-server-extra libi2c0-devel autoconf automake gettext-tools libtool"
+xorg-x11-server-extra libi2c0-devel autoconf automake gettext-tools libtool gstreamer-plugins-bad \
+gstreamer-plugins-good gstreamer-plugins-libav gstreamer-plugins-ugly
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
