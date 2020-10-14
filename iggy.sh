@@ -51,15 +51,15 @@ ICNV=libiconv-1.16
 LAVF=0.8.0
 
 # Build dependencies, recommended and script-related packages.
-DEPS="acpid moonjit-devel mlocate gcc gcc-c++ doxygen libopenssl-devel systemd-devel libjpeg62-devel \
-glib2-devel gstreamer-devel freetype2-devel fontconfig-devel fribidi-devel xorg-x11-devel giflib-devel \
-libpng16-compat-devel libtiff-devel libpoppler-devel libspectre-devel libraw-devel librsvg-devel \
-libudev-devel libmount-devel dbus-1-devel libpulse-devel libsndfile-devel gstreamer-plugins-base-devel \
-check-devel meson cmake openjpeg2-devel harfbuzz-devel Mesa-libGLESv2-devel scim-devel libwebp-devel \
-libxkbcommon-x11-devel wmctrl xdotool cowsay valgrind ddcutil faenza-icon-theme alsa-devel pam-devel \
-libgbm-devel libinput-devel bluez-devel ccache aspell nasm geoclue2-devel libdrm-devel \
-xorg-x11-server-extra libi2c0-devel autoconf automake gettext-tools libtool gstreamer-plugins-bad \
-gstreamer-plugins-good gstreamer-plugins-libav gstreamer-plugins-ugly libexif-devel"
+DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel cmake cowsay \
+dbus-1-devel ddcutil doxygen faenza-icon-theme fontconfig-devel freetype2-devel fribidi-devel \
+gcc gcc-c++ geoclue2-devel gettext-tools giflib-devel glib2-devel gstreamer-devel \
+gstreamer-plugins-base-devel gstreamer-plugins-libav gstreamer-plugins-ugly harfbuzz-devel \
+libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-devel libmount-devel \
+libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel libpulse-devel libraw-devel \
+librsvg-devel libsndfile-devel libspectre-devel libtiff-devel libtool libudev-devel libwebp-devel \
+libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate moonjit-devel nasm openjpeg2-devel pam-devel \
+scim-devel systemd-devel valgrind wmctrl xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
