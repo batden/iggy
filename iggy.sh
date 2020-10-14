@@ -55,11 +55,12 @@ DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel c
 dbus-1-devel ddcutil doxygen faenza-icon-theme fontconfig-devel freetype2-devel fribidi-devel \
 gcc gcc-c++ geoclue2-devel gettext-tools giflib-devel glib2-devel gstreamer-devel \
 gstreamer-plugins-base-devel gstreamer-plugins-libav gstreamer-plugins-ugly harfbuzz-devel \
-libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-devel libmount-devel \
-libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel libpulse-devel libraw-devel \
-librsvg-devel libsndfile-devel libspectre-devel libtiff-devel libtool libudev-devel libwebp-devel \
-libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate moonjit-devel nasm openjpeg2-devel pam-devel \
-scim-devel systemd-devel valgrind wmctrl xdotool xorg-x11-devel xorg-x11-server-extra"
+libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-devel \
+libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
+libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
+libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate \
+moonjit-devel nasm openjpeg2-devel pam-devel scim-devel systemd-devel valgrind wmctrl xdotool \
+xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
