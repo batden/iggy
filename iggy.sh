@@ -710,9 +710,6 @@ release_go() {
   rebuild_optim_mn
   rebuild_optim_at
 
-  sudo mkdir -p /etc/enlightenment
-  do_lnk
-
   sudo ln -sf /usr/local/share/xsessions/enlightenment.desktop \
     /usr/share/xsessions/enlightenment.desktop
 
@@ -742,9 +739,6 @@ wld_go() {
   sudo mkdir -p /usr/share/wayland-sessions
   sudo ln -sf /usr/local/share/wayland-sessions/enlightenment.desktop \
     /usr/share/wayland-sessions/enlightenment.desktop
-
-  sudo mkdir -p /etc/enlightenment
-  do_lnk
 
   sudo updatedb
   beep_ok
