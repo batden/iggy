@@ -681,9 +681,6 @@ update_go() {
 
   rebuild_plain
 
-  sudo mkdir -p /etc/enlightenment
-  do_lnk
-
   sudo ln -sf /usr/local/share/xsessions/enlightenment.desktop \
     /usr/share/xsessions/enlightenment.desktop
 
