@@ -42,6 +42,7 @@ OFF="\e[0m"    # Turn off ANSI colors and formatting.
 DLDIR=$(xdg-user-dir DOWNLOAD)
 DOCDIR=$(xdg-user-dir DOCUMENTS)
 SCRFLR=$HOME/.iggy
+REBASEF="git config pull.rebase false"
 CONFG="./configure --libdir=/usr/local/lib64"
 GEN="./autogen.sh --libdir=/usr/local/lib64"
 MBUILD="meson --libdir=/usr/local/lib64 build"
@@ -249,6 +250,7 @@ rebuild_plain() {
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
+
   git pull
   meson --reconfigure build
   ninja -C build || true
@@ -316,7 +318,7 @@ rebuild_optim_mn() {
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
-  git pull
+  $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
   meson configure -Dexample=false -Dbuildtype=release build
