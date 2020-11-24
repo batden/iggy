@@ -250,8 +250,8 @@ rebuild_plain() {
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
-
-  git pull
+  $REBASEF && git pull
+  echo
   meson --reconfigure build
   ninja -C build || true
   $SNIN || true
@@ -393,7 +393,7 @@ rebuild_wld_mn() {
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
-  git pull
+  $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
   meson configure -Dexample=false -Dbuildtype=release build
