@@ -265,7 +265,7 @@ rebuild_plain() {
     cd $ESRC/e24/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
-    git pull
+    $REBASEF && git pull
     rm -rf build
     echo
 
@@ -298,7 +298,7 @@ rebuild_plain() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
-    git pull
+    $REBASEF && git pull
 
     $GEN
     make || true
@@ -333,7 +333,7 @@ rebuild_optim_mn() {
 
     cd $ESRC/e24/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
-    git reset --hard &>/dev/null
+    $REBASEF && git reset --hard &>/dev/null
     git pull
 
     case $I in
@@ -373,7 +373,7 @@ rebuild_optim_at() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
-    git pull
+    $REBASEF && git pull
 
     $GEN
     make || true
@@ -409,7 +409,7 @@ rebuild_wld_mn() {
     cd $ESRC/e24/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
-    git pull
+    $REBASEF && git pull
 
     case $I in
     efl)
@@ -452,7 +452,7 @@ rebuild_wld_at() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
-    git pull
+    $REBASEF && git pull
 
     $GEN
     make || true
