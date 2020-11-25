@@ -252,7 +252,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --reconfigure build
+  meson --libdir=/usr/local/lib64 --reconfigure build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
