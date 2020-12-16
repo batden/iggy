@@ -1,7 +1,7 @@
 # iggy
 
 
-**An easy-to-use Bash script to build and install Enlightenment 24 on openSUSE Leap or Tumbleweed :kiss:**
+**An easy-to-use Bash script to build and install Enlightenment 24 on Leap or Tumbleweed :kiss:**
 
 See also [erode.sh](https://github.com/sensamillion/erode) (companion script).
 
