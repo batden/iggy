@@ -49,7 +49,7 @@ MBUILD="meson --libdir=/usr/local/lib64 build"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
 ICNV=libiconv-1.16
-LAVF=0.8.0
+LAVF=0.8.2
 
 # Build dependencies, recommended and script-related packages.
 DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel cmake cowsay \
@@ -199,6 +199,28 @@ e_tokens() {
   fi
 }
 
+avf_chk() {
+  if [ -d $ESRC/libavif-0.8.0 ]; then
+    printf "\n$BDY%s $OFF%s\n\n" "LIBAVIF NEEDS TO BE UPDATED!"
+    cd $ESRC/libavif-0.8.0/build
+    sudo xargs rm -rf <install_manifest.txt
+    cd ../.. && rm -rf libavif-0.8.0
+
+    cd $DLDIR
+    wget -c https://github.com/AOmediaCodec/libavif/archive/v$LAVF.tar.gz
+    tar xzvf v$LAVF.tar.gz -C $ESRC
+    cd $ESRC/libavif-$LAVF
+    mkdir -p build && cd build
+    cmake .. -DAVIF_CODEC_AOM=ON -DBUILD_SHARED_LIBS=OFF
+    make
+    sudo make install
+    sudo ln -sf /usr/local/lib64/pkgconfig/libavif.pc /usr/lib64/pkgconfig
+    sudo ldconfig
+    rm -rf $DLDIR/v$LAVF.tar.gz
+    echo
+  fi
+}
+
 build_plain() {
   sudo ln -sf /usr/lib64/preloadable_libintl.so /usr/lib/libintl.so
   sudo ldconfig
@@ -243,6 +265,7 @@ build_plain() {
 
 rebuild_plain() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
+  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -311,6 +334,7 @@ rebuild_plain() {
 
 rebuild_optim_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
+  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -386,6 +410,7 @@ rebuild_optim_at() {
 
 rebuild_wld_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
+  avf_chk
   bin_deps
   e_tokens
   elap_start
