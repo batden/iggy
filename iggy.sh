@@ -37,6 +37,7 @@ ITA="\e[3m"    # Italic text.
 BDR="\e[1;31m" # Bold red text.
 BDG="\e[1;32m" # Bold green text.
 BDY="\e[1;33m" # Bold yellow text.
+BDP="\e[1;35m" # Bold purple text.
 OFF="\e[0m"    # Turn off ANSI colors and formatting.
 
 DLDIR=$(xdg-user-dir DOWNLOAD)
@@ -102,7 +103,7 @@ sel_menu() {
     printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 from the master branch"
     printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment 24"
     printf "3. $BDG%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
-    printf "4. $BDY%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
+    printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
 
     # Hints.
     # 1/2: Plain build with well tested default values.
