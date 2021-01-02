@@ -37,6 +37,7 @@ ITA="\e[3m"    # Italic text.
 BDR="\e[1;31m" # Bold red text.
 BDG="\e[1;32m" # Bold green text.
 BDY="\e[1;33m" # Bold yellow text.
+BDC="\e[1;34m" # Bold cyan text.
 BDP="\e[1;35m" # Bold purple text.
 OFF="\e[0m"    # Turn off ANSI colors and formatting.
 
@@ -102,7 +103,7 @@ sel_menu() {
     echo
     printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 from the master branch"
     printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment 24"
-    printf "3. $BDG%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
+    printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
     printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
 
     # Hints.
@@ -725,7 +726,7 @@ update_go() {
 
 release_go() {
   clear
-  printf "\n$BDG%s $OFF%s\n\n" "* UPDATING ENLIGHTENMENT DESKTOP: RELEASE BUILD *"
+  printf "\n$BDC%s $OFF%s\n\n" "* UPDATING ENLIGHTENMENT DESKTOP: RELEASE BUILD *"
 
   cp -f $SCRFLR/iggy.sh $HOME/bin
   chmod +x $HOME/bin/iggy.sh
@@ -750,7 +751,7 @@ release_go() {
 
 wld_go() {
   clear
-  printf "\n$BDY%s $OFF%s\n\n" "* UPDATING ENLIGHTENMENT DESKTOP: WAYLAND BUILD *"
+  printf "\n$BDP%s $OFF%s\n\n" "* UPDATING ENLIGHTENMENT DESKTOP: WAYLAND BUILD *"
 
   cp -f $SCRFLR/iggy.sh $HOME/bin
   chmod +x $HOME/bin/iggy.sh
