@@ -117,7 +117,7 @@ sel_menu() {
 }
 
 bin_deps() {
-  sudo zypper refresh
+  sudo zypper refresh && sudo zypper update
 
   sudo zypper install $DEPS
   if [ $? -ne 0 ]; then
