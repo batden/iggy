@@ -62,7 +62,7 @@ libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-d
 libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
 libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
 libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate \
-moonjit-devel nasm openjpeg2-devel pam-devel scim-devel systemd-devel valgrind-devel wmctrl \
+moonjit-devel nasm openjpeg2-devel pam-devel systemd-devel valgrind-devel wmctrl \
 xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
