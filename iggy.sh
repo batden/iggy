@@ -101,7 +101,7 @@ beep_ok() {
 sel_menu() {
   if [ $INPUT -lt 1 ]; then
     echo
-    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 from the master branch"
+    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 now"
     printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment 24"
     printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
     printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
