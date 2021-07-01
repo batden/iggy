@@ -1,32 +1,28 @@
 #!/bin/bash
 
-# IGGY.SH
+# This Bash script allows you to easily and safely install Enlightenment along with other
+# EFL-based applications, on openSUSE Leap 15.3.
 
-# This Bash script allows you to easily and safely install Enlightenment 24 along with other
-# EFL-based apps, on openSUSE Leap 15.2 or Tumbleweed 64-bit systems.
-
-# See README.md for instructions on how to use this script.
+# Note that you need a properly configured 'sudo' to execute this script.
+# See README.md for further instructions on how to use IGGY.SH.
 
 # Heads up!
-# Enlightenment programs installed from .rpm packages or tarballs will inevitably conflict
-# with E24 programs compiled from Git repositories——do not mix source code with
-# pre-built binaries!
+# Enlightenment programs installed from .rpm packages or tarballs will inevitably
+# conflict with programs compiled from git repositories——do not mix source code
+# with pre-built binaries! So please remove thoroughly any previous binary
+# installation of EFL/Enlightenment/E-apps (track down and delete any
+# leftover files) before running iggy.sh.
 
 # Once installed, you can update your shiny new Enlightenment desktop whenever you want to.
 # However, because software gains entropy over time (performance regression, unexpected
-# behavior... this is especially true when dealing directly with source code), we highly
-# recommend doing a complete uninstall and reinstall of E24 every three weeks or so
-# for an optimal user experience.
+# behavior... and this is especially true when dealing directly with source code), we
+# highly recommend doing a complete uninstall and reinstall of your Enlightenment
+# desktop every three weeks or so for an optimal user experience. Follow the
+# same steps (uninstall before upgrading...) if you plan to upgrade your
+# current system to a newer version of openSUSE.
 
-# iggy.sh is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
+# IGGY.SH is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
 # feel free to use this script as you see fit.
-
-# Please consider starring our repositories to show your support: https://github.com/sensamillion
-# Cheers!
-
-# Cool links.
-# Eyecandy for your enlightened desktop: https://extra.enlightenment.org/themes/
-# Screenshots: https://www.enlightenment.org/ss/
 
 # ---------------
 # LOCAL VARIABLES
@@ -47,35 +43,36 @@ SCRFLR=$HOME/.iggy
 REBASEF="git config pull.rebase false"
 CONFG="./configure --libdir=/usr/local/lib64"
 GEN="./autogen.sh --libdir=/usr/local/lib64"
-MBUILD="meson --libdir=/usr/local/lib64 build"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
-ICNV=libiconv-1.16
-LAVF=0.8.2
+LAVF=0.9.1
 
 # Build dependencies, recommended and script-related packages.
 DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel cmake cowsay \
-dbus-1-devel ddcutil doxygen faenza-icon-theme fontconfig-devel freetype2-devel fribidi-devel \
+dbus-1-devel ddcutil doxygen fontconfig-devel freetype2-devel fribidi-devel \
 gcc gcc-c++ geoclue2-devel gettext-tools giflib-devel glib2-devel graphviz-devel gstreamer-devel \
 gstreamer-plugins-base-devel gstreamer-plugins-libav gstreamer-plugins-ugly harfbuzz-devel \
-libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-devel \
+libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel libinput-devel libjpeg62-devel \
 libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
 libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
 libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate \
-moonjit-devel nasm openjpeg2-devel pam-devel scim-devel systemd-devel valgrind-devel wmctrl \
+nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel systemd-devel valgrind-devel wmctrl \
 xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
 CLONETY="git clone https://git.enlightenment.org/apps/terminology.git"
-CLONE24="git clone https://git.enlightenment.org/core/enlightenment.git"
+CLONe25="git clone https://git.enlightenment.org/core/enlightenment.git"
 CLONEPH="git clone https://git.enlightenment.org/apps/ephoto.git"
 CLONERG="git clone https://git.enlightenment.org/apps/rage.git"
 CLONEVI="git clone https://git.enlightenment.org/apps/evisum.git"
 CLONEVE="git clone https://git.enlightenment.org/tools/enventor.git"
+CLONEXP="git clone https://git.enlightenment.org/apps/express.git"
+CLONECR="git clone https://git.enlightenment.org/apps/ecrire.git"
+CLONENT="git clone https://github.com/vtorri/entice"
 
 # ('MN' stands for Meson, 'AT' refers to Autotools)
-PROG_MN="efl terminology enlightenment ephoto evisum rage"
+PROG_MN="efl terminology enlightenment ephoto evisum rage express ecrire entice"
 PROG_AT="enventor"
 
 # ---------
@@ -98,18 +95,18 @@ beep_ok() {
   paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 }
 
+# Hints.
+# 1/2: Plain build with well tested default values.
+# 3: A feature-rich, decently optimized build; however, occasionally technical glitches do happen...
+# 4: Same as above, but running Enlightenment as a Wayland compositor is still considered experimental.
+#
 sel_menu() {
   if [ $INPUT -lt 1 ]; then
     echo
-    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 now"
-    printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment 24"
-    printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
-    printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
-
-    # Hints.
-    # 1/2: Plain build with well tested default values.
-    # 3: A feature-rich, decently optimized build; however, occasionally technical glitches do happen...
-    # 4: Same as above, but running Enlightenment as a Wayland compositor is still considered experimental.
+    printf "1  $BDG%s $OFF%s\n\n" "INSTALL Enlightenment now"
+    printf "2  $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment"
+    printf "3  $BDC%s $OFF%s\n\n" "Update and rebuild Enlightenment in RELEASE mode"
+    printf "4  $BDP%s $OFF%s\n\n" "Update and rebuild Enlightenment with WAYLAND support"
 
     sleep 1 && printf "$ITA%s $OFF%s\n\n" "Or press Ctrl+C to quit."
     read INPUT
@@ -131,7 +128,7 @@ bin_deps() {
 
 ls_dir() {
   COUNT=$(ls -d -- */ | wc -l)
-  if [ $COUNT == 7 ]; then
+  if [ $COUNT == 10 ]; then
     printf "$BDG%s $OFF%s\n\n" "All programs have been downloaded successfully."
     sleep 2
   elif [ $COUNT == 0 ]; then
@@ -140,7 +137,7 @@ ls_dir() {
     beep_exit
     exit 1
   else
-    printf "\n$BDY%s %s\n" "WARNING: ONLY $COUNT OF 7 PROGRAMS HAVE BEEN DOWNLOADED!"
+    printf "\n$BDY%s %s\n" "WARNING: ONLY $COUNT OF 10 PROGRAMS HAVE BEEN DOWNLOADED!"
     printf "\n$BDY%s $OFF%s\n\n" "WAIT 12 SECONDS OR HIT CTRL+C TO QUIT."
     sleep 12
   fi
@@ -159,22 +156,23 @@ elap_start() {
 elap_stop() {
   DELTA=$(($(date +%s) - $START))
   printf "\n%s" "Compilation and linking time: "
-  printf ""%dh:%dm:%ds"\n\n" $(($DELTA / 3600)) $(($DELTA % 3600 / 60)) $(($DELTA % 60))
+  eval "echo $(date -ud "@$DELTA" +'%H hr %M min %S sec')"
 }
 
 e_bkp() {
   # Timestamp: See the date man page to convert epoch to human-readable date
   # or visit https://www.epochconverter.com/
+  # To restore a backup, use the same command that was executed but with
+  # the source and destination reversed:
+  # e.g. cp -aR /home/jamie/Documents/ebackups/E_1622439936/.e* /home/jamie/
+  # (Then press Ctrl+Alt+End to restart Enlightenment if you are currently logged into)
+  #
   TSTAMP=$(date +%s)
   mkdir -p $DOCDIR/ebackups
 
-  mkdir $DOCDIR/ebackups/E_$TSTAMP
-  cp -aR $HOME/.elementary $DOCDIR/ebackups/E_$TSTAMP && cp -aR $HOME/.e $DOCDIR/ebackups/E_$TSTAMP
-
-  if [ -d $HOME/.config/terminology ]; then
-    cp -aR $HOME/.config/terminology $DOCDIR/ebackups/Eterm_$TSTAMP
-  fi
-
+  mkdir $DOCDIR/ebackups/E_$TSTAMP &&
+    cp -aR $HOME/.elementary $DOCDIR/ebackups/E_$TSTAMP &&
+    cp -aR $HOME/.e $DOCDIR/ebackups/E_$TSTAMP
   sleep 2
 }
 
@@ -184,9 +182,9 @@ e_tokens() {
   TOKEN=$(wc -l <$HOME/.cache/ebuilds/etokens)
   if [ "$TOKEN" -gt 3 ]; then
     echo
-    # Questions: Enter either y or n, or press Enter to accept the default values.
+    # Questions: Enter either y or n, or press Enter to accept the default values (capital letter).
     beep_question
-    read -t 12 -p "Do you want to back up your E24 settings now? [y/N] " answer
+    read -t 12 -p "Do you want to back up your Enlightenment settings now? [y/N] " answer
     case $answer in
     [yY])
       e_bkp
@@ -201,25 +199,9 @@ e_tokens() {
   fi
 }
 
-avf_chk() {
-  if [ -d $ESRC/libavif-0.8.0 ]; then
-    printf "\n$BDY%s $OFF%s\n\n" "LIBAVIF NEEDS TO BE UPDATED!"
-    cd $ESRC/libavif-0.8.0/build
-    sudo xargs rm -rf <install_manifest.txt
-    cd ../.. && rm -rf libavif-0.8.0
-
-    cd $DLDIR
-    wget -c https://github.com/AOmediaCodec/libavif/archive/v$LAVF.tar.gz
-    tar xzvf v$LAVF.tar.gz -C $ESRC
-    cd $ESRC/libavif-$LAVF
-    mkdir -p build && cd build
-    cmake .. -DAVIF_CODEC_AOM=ON -DBUILD_SHARED_LIBS=OFF
-    make
-    sudo make install
-    sudo ln -sf /usr/local/lib64/pkgconfig/libavif.pc /usr/lib64/pkgconfig
-    sudo ldconfig
-    rm -rf $DLDIR/v$LAVF.tar.gz
-    echo
+rstrt_e() {
+  if [ "$XDG_CURRENT_DESKTOP" == "Enlightenment" ]; then
+    enlightenment_remote -restart
   fi
 }
 
@@ -228,20 +210,22 @@ build_plain() {
   sudo ldconfig
 
   for I in $PROG_MN; do
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Building $I..."
 
     case $I in
     efl)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
+        -Dlua-interpreter=lua -Dbindings= \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     *)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || true
       ;;
     esac
@@ -254,7 +238,7 @@ build_plain() {
   done
 
   for I in $PROG_AT; do
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Building $I..."
 
     $GEN
@@ -267,7 +251,6 @@ build_plain() {
 
 rebuild_plain() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -277,7 +260,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 --reconfigure build
+  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -287,7 +270,7 @@ rebuild_plain() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
@@ -296,15 +279,18 @@ rebuild_plain() {
 
     case $I in
     efl)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
+        -Dlua-interpreter=lua -Dbindings= \
+        build
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     enlightenment)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     *)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || true
       ;;
     esac
@@ -318,7 +304,7 @@ rebuild_plain() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -336,7 +322,6 @@ rebuild_plain() {
 
 rebuild_optim_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -357,7 +342,7 @@ rebuild_optim_mn() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     $REBASEF && git reset --hard &>/dev/null
     git pull
@@ -365,19 +350,21 @@ rebuild_optim_mn() {
     case $I in
     efl)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler=json,avif -Dbuildtype=release build
+
+      meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
+        -Dharfbuzz=true -Dlua-interpreter=lua -Delua=true -Dbindings=lua,cxx -Dbuild-tests=false \
+        -Dbuild-examples=false -Devas-loaders-disabler= -Dbuildtype=release \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || true
       ;;
     esac
@@ -394,7 +381,7 @@ rebuild_optim_at() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -411,8 +398,13 @@ rebuild_optim_at() {
 }
 
 rebuild_wld_mn() {
+  if [ "$XDG_SESSION_TYPE" == "tty" ] && [ "$XDG_CURRENT_DESKTOP" == "Enlightenment" ]; then
+    printf "\n$BDR%s $OFF%s\n\n" "PLEASE LOG IN TO THE DEFAULT DESKTOP ENVIRONMENT TO EXECUTE THIS SCRIPT."
+    beep_exit
+    exit 1
+  fi
+
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -433,7 +425,7 @@ rebuild_wld_mn() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
@@ -441,16 +433,16 @@ rebuild_wld_mn() {
     case $I in
     efl)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
+      meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler=json,avif \
+        -Devas-loaders-disabler= \
         -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dwl=true -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
@@ -474,7 +466,7 @@ rebuild_wld_at() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -535,8 +527,8 @@ do_bsh_alias() {
     export LDFLAGS=-L/usr/local/lib64
     export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib64/pkgconfig
 
-    # Parallel build? It's your call...
-    #export MAKE="make -j$(($(nproc) * 2))"
+    # Parallel build.
+    export MAKE="make -j$(($(nproc) * 2))"
 EOF
 
     source $HOME/.bash_aliases
@@ -558,40 +550,31 @@ set_p_src() {
   beep_attention
   # Do not append a trailing slash (/) to the end of the path prefix.
   read -p "Please enter a path to the Enlightenment source folders \
-  (e.g. /home/jamie or /home/jamie/testing): " mypath
+  (e.g. /home/jamie/Documents or /home/jamie/testing): " mypath
   mkdir -p "$mypath"/sources
   ESRC="$mypath"/sources
   echo $ESRC >$HOME/.cache/ebuilds/storepath
   printf "\n%s\n\n" "You have chosen: $ESRC"
-  sleep 1
+  sleep 2
 }
 
 get_preq() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   cd $DLDIR
-  printf "\n\n$BLD%s $OFF%s\n\n" "Installing prerequisites/nice-to-have requirements..."
-  wget -c https://ftp.gnu.org/pub/gnu/libiconv/$ICNV.tar.gz
-  tar xzvf $ICNV.tar.gz -C $ESRC
-  cd $ESRC/$ICNV
-  $CONFG
-  make
-  sudo make install
-  sudo ln -sf /usr/local/lib64/libiconv.so* /usr/lib64
-  sudo ldconfig
-  rm -rf $DLDIR/$ICNV.tar.gz
-  echo
+  printf "\n\n$BLD%s $OFF%s\n\n" "Installing prerequisites..."
 
   cd $ESRC
   git clone https://aomedia.googlesource.com/aom
   cd $ESRC/aom
   mkdir -p aom-build && cd aom-build
+  printf "\n$BLD%s $OFF%s\n" "This may take a while. Please be patient."
   cmake .. -DENABLE_CCACHE=1 -DENABLE_NASM=ON
   make
   sudo make install
   echo
 
   cd $DLDIR
-  wget -c https://github.com/AOmediaCodec/libavif/archive/v$LAVF.tar.gz
+  wget -c https://github.com/AOMediaCodec/libavif/archive/refs/tags/v$LAVF.tar.gz
   tar xzvf v$LAVF.tar.gz -C $ESRC
   cd $ESRC/libavif-$LAVF
   mkdir -p build && cd build
@@ -606,7 +589,7 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  $MBUILD
+  meson --libdir=/usr/local/lib64-Dexample=false build
   ninja -C build || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
@@ -615,6 +598,8 @@ get_preq() {
 }
 
 do_lnk() {
+
+  sudo ln -sf /usr/local/etc/enlightenment/sysactions.conf /etc/enlightenment/sysactions.conf
   sudo ln -sf /usr/local/etc/enlightenment/system.conf /etc/enlightenment/system.conf
   sudo ln -sf /usr/local/etc/xdg/menus/e-applications.menu /etc/xdg/menus/e-applications.menu
 }
@@ -650,15 +635,15 @@ install_now() {
   get_preq
 
   cd $HOME
-  mkdir -p $ESRC/e24
-  cd $ESRC/e24
+  mkdir -p $ESRC/e25
+  cd $ESRC/e25
 
-  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from the Enlightened git repositories..."
+  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from the Enlightenment git repositories..."
   $CLONEFL
   echo
   $CLONETY
   echo
-  $CLONE24
+  $CLONE25
   echo
   $CLONEPH
   echo
@@ -668,9 +653,14 @@ install_now() {
   echo
   $CLONEVE
   echo
+  $CLONEXP
+  echo
+  $CLONECR
+  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from vtorri's github repo..."
+  $CLONENT
+  echo
 
   ls_dir
-
   build_plain
 
   printf "\n%s\n\n" "Almost done..."
@@ -690,7 +680,7 @@ install_now() {
   printf "\n$BDY%s %s" "'Update checking' —— you can disable this feature because it serves no useful purpose."
   printf "\n$BDY%s $OFF%s\n\n\n" "'Network management support' —— Connman is not needed."
   # Enlightenment adds three shortcut icons (namely home.desktop, root.desktop and tmp.desktop)
-  # to your Desktop, you can safely delete them.
+  # to your Desktop, you can safely delete them if it bothers you.
 
   echo
   cowsay "Now reboot your computer then select Enlightenment on the login screen... \
@@ -719,6 +709,7 @@ update_go() {
 
   sudo updatedb
   beep_ok
+  rstrt_e
   echo
   cowsay -f www "That's All Folks!"
   echo
@@ -744,6 +735,7 @@ release_go() {
 
   sudo updatedb
   beep_ok
+  rstrt_e
   echo
   cowsay -f www "That's All Folks!"
   echo
