@@ -42,7 +42,6 @@ SCRFLR=$HOME/.iggy
 REBASEF="git config pull.rebase false"
 CONFG="./configure --libdir=/usr/local/lib64"
 GEN="./autogen.sh --libdir=/usr/local/lib64"
-MBUILD="meson --libdir=/usr/local/lib64"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
 LAVF=0.9.1
@@ -103,10 +102,10 @@ beep_ok() {
 sel_menu() {
   if [ $INPUT -lt 1 ]; then
     echo
-    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment now"
-    printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment"
-    printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild Enlightenment in RELEASE mode"
-    printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild Enlightenment with WAYLAND support"
+    printf "1  $BDG%s $OFF%s\n\n" "INSTALL Enlightenment now"
+    printf "2  $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment"
+    printf "3  $BDC%s $OFF%s\n\n" "Update and rebuild Enlightenment in RELEASE mode"
+    printf "4  $BDP%s $OFF%s\n\n" "Update and rebuild Enlightenment with WAYLAND support"
 
     sleep 1 && printf "$ITA%s $OFF%s\n\n" "Or press Ctrl+C to quit."
     read INPUT
@@ -182,9 +181,9 @@ e_tokens() {
   TOKEN=$(wc -l <$HOME/.cache/ebuilds/etokens)
   if [ "$TOKEN" -gt 3 ]; then
     echo
-    # Questions: Enter either y or n, or press Enter to accept the default values.
+    # Questions: Enter either y or n, or press Enter to accept the default values (capital letter).
     beep_question
-    read -t 12 -p "Do you want to back up your e25 settings now? [y/N] " answer
+    read -t 12 -p "Do you want to back up your Enlightenment settings now? [y/N] " answer
     case $answer in
     [yY])
       e_bkp
@@ -260,7 +259,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 --reconfigure -Dexample=false build
+  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -291,6 +290,7 @@ rebuild_plain() {
       ;;
     *)
       meson --libdir=/usr/local/lib64 build
+      ninja -C build || true
       ;;
     esac
 
@@ -331,7 +331,7 @@ rebuild_optim_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  meson --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -350,20 +350,20 @@ rebuild_optim_mn() {
     efl)
       sudo chown $USER build/.ninja*
 
-      meson --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true -Dharfbuzz=true \
-        -Dlua-interpreter=lua -Delua=true -Dbindings=lua,cxx -Dbuild-tests=false \
+      meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
+        -Dharfbuzz=true -Dlua-interpreter=lua -Delua=true -Dbindings=lua,cxx -Dbuild-tests=false \
         -Dbuild-examples=false -Devas-loaders-disabler= -Dbuildtype=release \
         build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || true
       ;;
     esac
@@ -414,7 +414,7 @@ rebuild_wld_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  eson --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -432,7 +432,7 @@ rebuild_wld_mn() {
     case $I in
     efl)
       sudo chown $USER build/.ninja*
-      meson --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
+      meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= \
@@ -441,12 +441,12 @@ rebuild_wld_mn() {
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
       ninja -C build || true
       ;;
     esac
