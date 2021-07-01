@@ -3,7 +3,8 @@
 # This Bash script allows you to easily and safely install Enlightenment along with other
 # EFL-based applications, on openSUSE Leap 15.3.
 
-# See README.md for instructions on how to use this script.
+# Note that you need a properly configured 'sudo' to execute this script.
+# See README.md for further instructions on how to use IGGY.SH.
 
 # Heads up!
 # Enlightenment programs installed from .rpm packages or tarballs will inevitably
