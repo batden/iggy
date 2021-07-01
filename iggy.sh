@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This Bash script allows you to easily and safely install Enlightenment along with other
-# EFL-based apps, on openSUSE Leap 15.3.
+# EFL-based applications, on openSUSE Leap 15.3.
 
 # See README.md for instructions on how to use this script.
 
@@ -20,7 +20,7 @@
 # same steps (uninstall before upgrading...) if you plan to upgrade your
 # current system to a newer version of openSUSE.
 
-# iggy.sh is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
+# IGGY.SH is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
 # feel free to use this script as you see fit.
 
 # ---------------
@@ -95,6 +95,11 @@ beep_ok() {
   paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 }
 
+# Hints.
+# 1/2: Plain build with well tested default values.
+# 3: A feature-rich, decently optimized build; however, occasionally technical glitches do happen...
+# 4: Same as above, but running Enlightenment as a Wayland compositor is still considered experimental.
+#
 sel_menu() {
   if [ $INPUT -lt 1 ]; then
     echo
@@ -102,11 +107,6 @@ sel_menu() {
     printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment"
     printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild Enlightenment in RELEASE mode"
     printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild Enlightenment with WAYLAND support"
-
-    # Hints.
-    # 1/2: Plain build with well tested default values.
-    # 3: A feature-rich, decently optimized build; however, occasionally technical glitches do happen...
-    # 4: Same as above, but running Enlightenment as a Wayland compositor is still considered experimental.
 
     sleep 1 && printf "$ITA%s $OFF%s\n\n" "Or press Ctrl+C to quit."
     read INPUT
@@ -221,11 +221,11 @@ build_plain() {
       ninja -C build || mng_err
       ;;
     enlightenment)
-      meson --libdir=/usr/local/lib64
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     *)
-      meson --libdir=/usr/local/lib64
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || true
       ;;
     esac
@@ -282,16 +282,15 @@ rebuild_plain() {
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
         -Dlua-interpreter=lua -Dbindings= \
         build
-      meson --libdir=/usr/local/lib64
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     enlightenment)
-      meson --libdir=/usr/local/lib64
+      meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
     *)
-      meson --libdir=/usr/local/lib64
-      ninja -C build || true
+      meson --libdir=/usr/local/lib64 build
       ;;
     esac
 
@@ -415,7 +414,7 @@ rebuild_wld_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  $MBUILD -Dexample=false -Dbuildtype=release build
+  eson --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -436,7 +435,7 @@ rebuild_wld_mn() {
       meson --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler=json,avif \
+        -Devas-loaders-disabler= \
         -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
@@ -589,7 +588,7 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  meson --libdir=/usr/local/lib64-Dexample=false
+  meson --libdir=/usr/local/lib64-Dexample=false build
   ninja -C build || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
@@ -598,6 +597,8 @@ get_preq() {
 }
 
 do_lnk() {
+
+  sudo ln -sf /usr/local/etc/enlightenment/sysactions.conf /etc/enlightenment/sysactions.conf
   sudo ln -sf /usr/local/etc/enlightenment/system.conf /etc/enlightenment/system.conf
   sudo ln -sf /usr/local/etc/xdg/menus/e-applications.menu /etc/xdg/menus/e-applications.menu
 }
@@ -636,8 +637,8 @@ install_now() {
   mkdir -p $ESRC/e25
   cd $ESRC/e25
 
-  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from the Enlightened git repositories..."
- $CLONEFL
+  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from the Enlightenment git repositories..."
+  $CLONEFL
   echo
   $CLONETY
   echo
