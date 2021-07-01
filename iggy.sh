@@ -5,7 +5,6 @@
 
 # See README.md for instructions on how to use this script.
 
-
 # Heads up!
 # Enlightenment programs installed from .rpm packages or tarballs will inevitably
 # conflict with programs compiled from git repositories——do not mix source code
@@ -43,7 +42,7 @@ SCRFLR=$HOME/.iggy
 REBASEF="git config pull.rebase false"
 CONFG="./configure --libdir=/usr/local/lib64"
 GEN="./autogen.sh --libdir=/usr/local/lib64"
-MBUILD="meson --libdir=/usr/local/lib64 build"
+MBUILD="meson --libdir=/usr/local/lib64"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
 LAVF=0.9.1
@@ -63,7 +62,7 @@ xdotool xorg-x11-devel xorg-x11-server-extra"
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
 CLONETY="git clone https://git.enlightenment.org/apps/terminology.git"
-CLONE24="git clone https://git.enlightenment.org/core/enlightenment.git"
+CLONe25="git clone https://git.enlightenment.org/core/enlightenment.git"
 CLONEPH="git clone https://git.enlightenment.org/apps/ephoto.git"
 CLONERG="git clone https://git.enlightenment.org/apps/rage.git"
 CLONEVI="git clone https://git.enlightenment.org/apps/evisum.git"
@@ -185,7 +184,7 @@ e_tokens() {
     echo
     # Questions: Enter either y or n, or press Enter to accept the default values.
     beep_question
-    read -t 12 -p "Do you want to back up your E24 settings now? [y/N] " answer
+    read -t 12 -p "Do you want to back up your e25 settings now? [y/N] " answer
     case $answer in
     [yY])
       e_bkp
@@ -200,25 +199,33 @@ e_tokens() {
   fi
 }
 
+rstrt_e() {
+  if [ "$XDG_CURRENT_DESKTOP" == "Enlightenment" ]; then
+    enlightenment_remote -restart
+  fi
+}
+
 build_plain() {
   sudo ln -sf /usr/lib64/preloadable_libintl.so /usr/lib/libintl.so
   sudo ldconfig
 
   for I in $PROG_MN; do
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Building $I..."
 
     case $I in
     efl)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
+        -Dlua-interpreter=lua -Dbindings= \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
-      $MBUILD
+      meson --libdir=/usr/local/lib64
       ninja -C build || mng_err
       ;;
     *)
-      $MBUILD
+      meson --libdir=/usr/local/lib64
       ninja -C build || true
       ;;
     esac
@@ -231,7 +238,7 @@ build_plain() {
   done
 
   for I in $PROG_AT; do
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Building $I..."
 
     $GEN
@@ -253,7 +260,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 --reconfigure build
+  meson --libdir=/usr/local/lib64 --reconfigure -Dexample=false build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -263,7 +270,7 @@ rebuild_plain() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
@@ -272,15 +279,18 @@ rebuild_plain() {
 
     case $I in
     efl)
-      $MBUILD
+      meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
+        -Dlua-interpreter=lua -Dbindings= \
+        build
+      meson --libdir=/usr/local/lib64
       ninja -C build || mng_err
       ;;
     enlightenment)
-      $MBUILD
+      meson --libdir=/usr/local/lib64
       ninja -C build || mng_err
       ;;
     *)
-      $MBUILD
+      meson --libdir=/usr/local/lib64
       ninja -C build || true
       ;;
     esac
@@ -294,7 +304,7 @@ rebuild_plain() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -322,7 +332,7 @@ rebuild_optim_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  meson --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -332,7 +342,7 @@ rebuild_optim_mn() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     $REBASEF && git reset --hard &>/dev/null
     git pull
@@ -340,19 +350,21 @@ rebuild_optim_mn() {
     case $I in
     efl)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler=json,avif -Dbuildtype=release build
+
+      meson --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true -Dharfbuzz=true \
+        -Dlua-interpreter=lua -Delua=true -Dbindings=lua,cxx -Dbuild-tests=false \
+        -Dbuild-examples=false -Devas-loaders-disabler= -Dbuildtype=release \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson --libdir=/usr/local/lib64 configure -Dbuildtype=release build
       ninja -C build || true
       ;;
     esac
@@ -369,7 +381,7 @@ rebuild_optim_at() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -386,6 +398,12 @@ rebuild_optim_at() {
 }
 
 rebuild_wld_mn() {
+  if [ "$XDG_SESSION_TYPE" == "tty" ] && [ "$XDG_CURRENT_DESKTOP" == "Enlightenment" ]; then
+    printf "\n$BDR%s $OFF%s\n\n" "PLEASE LOG IN TO THE DEFAULT DESKTOP ENVIRONMENT TO EXECUTE THIS SCRIPT."
+    beep_exit
+    exit 1
+  fi
+
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   bin_deps
   e_tokens
@@ -397,7 +415,7 @@ rebuild_wld_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  $MBUILD -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -407,7 +425,7 @@ rebuild_wld_mn() {
   for I in $PROG_MN; do
     elap_start
 
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
@@ -415,7 +433,7 @@ rebuild_wld_mn() {
     case $I in
     efl)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
+      meson --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler=json,avif \
@@ -424,12 +442,12 @@ rebuild_wld_mn() {
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dwl=true -Dbuildtype=release build
+      meson --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson --libdir=/usr/local/lib64 -Dbuildtype=release build
       ninja -C build || true
       ;;
     esac
@@ -448,7 +466,7 @@ rebuild_wld_at() {
 
   for I in $PROG_AT; do
     elap_start
-    cd $ESRC/e24/$I
+    cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     sudo make distclean &>/dev/null
@@ -537,7 +555,7 @@ set_p_src() {
   ESRC="$mypath"/sources
   echo $ESRC >$HOME/.cache/ebuilds/storepath
   printf "\n%s\n\n" "You have chosen: $ESRC"
-  sleep 1
+  sleep 2
 }
 
 get_preq() {
@@ -571,7 +589,7 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  $MBUILD
+  meson --libdir=/usr/local/lib64-Dexample=false
   ninja -C build || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
@@ -615,15 +633,15 @@ install_now() {
   get_preq
 
   cd $HOME
-  mkdir -p $ESRC/e24
-  cd $ESRC/e24
+  mkdir -p $ESRC/e25
+  cd $ESRC/e25
 
   printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from the Enlightened git repositories..."
-  $CLONEFL
+ $CLONEFL
   echo
   $CLONETY
   echo
-  $CLONE24
+  $CLONE25
   echo
   $CLONEPH
   echo
@@ -633,9 +651,14 @@ install_now() {
   echo
   $CLONEVE
   echo
+  $CLONEXP
+  echo
+  $CLONECR
+  printf "\n\n$BLD%s $OFF%s\n\n" "Fetching source code from vtorri's github repo..."
+  $CLONENT
+  echo
 
   ls_dir
-
   build_plain
 
   printf "\n%s\n\n" "Almost done..."
@@ -655,7 +678,7 @@ install_now() {
   printf "\n$BDY%s %s" "'Update checking' —— you can disable this feature because it serves no useful purpose."
   printf "\n$BDY%s $OFF%s\n\n\n" "'Network management support' —— Connman is not needed."
   # Enlightenment adds three shortcut icons (namely home.desktop, root.desktop and tmp.desktop)
-  # to your Desktop, you can safely delete them.
+  # to your Desktop, you can safely delete them if it bothers you.
 
   echo
   cowsay "Now reboot your computer then select Enlightenment on the login screen... \
@@ -684,6 +707,7 @@ update_go() {
 
   sudo updatedb
   beep_ok
+  rstrt_e
   echo
   cowsay -f www "That's All Folks!"
   echo
@@ -709,6 +733,7 @@ release_go() {
 
   sudo updatedb
   beep_ok
+  rstrt_e
   echo
   cowsay -f www "That's All Folks!"
   echo
