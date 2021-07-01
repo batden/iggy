@@ -1,32 +1,28 @@
 #!/bin/bash
 
-# IGGY.SH
-
-# This Bash script allows you to easily and safely install Enlightenment 24 along with other
-# EFL-based apps, on openSUSE Leap 15.2 or Tumbleweed 64-bit systems.
+# This Bash script allows you to easily and safely install Enlightenment along with other
+# EFL-based apps, on openSUSE Leap 15.3.
 
 # See README.md for instructions on how to use this script.
 
+
 # Heads up!
-# Enlightenment programs installed from .rpm packages or tarballs will inevitably conflict
-# with E24 programs compiled from Git repositories——do not mix source code with
-# pre-built binaries!
+# Enlightenment programs installed from .rpm packages or tarballs will inevitably
+# conflict with programs compiled from git repositories——do not mix source code
+# with pre-built binaries! So please remove thoroughly any previous binary
+# installation of EFL/Enlightenment/E-apps (track down and delete any
+# leftover files) before running iggy.sh.
 
 # Once installed, you can update your shiny new Enlightenment desktop whenever you want to.
 # However, because software gains entropy over time (performance regression, unexpected
-# behavior... this is especially true when dealing directly with source code), we highly
-# recommend doing a complete uninstall and reinstall of E24 every three weeks or so
-# for an optimal user experience.
+# behavior... and this is especially true when dealing directly with source code), we
+# highly recommend doing a complete uninstall and reinstall of your Enlightenment
+# desktop every three weeks or so for an optimal user experience. Follow the
+# same steps (uninstall before upgrading...) if you plan to upgrade your
+# current system to a newer version of openSUSE.
 
 # iggy.sh is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
 # feel free to use this script as you see fit.
-
-# Please consider starring our repositories to show your support: https://github.com/sensamillion
-# Cheers!
-
-# Cool links.
-# Eyecandy for your enlightened desktop: https://extra.enlightenment.org/themes/
-# Screenshots: https://www.enlightenment.org/ss/
 
 # ---------------
 # LOCAL VARIABLES
@@ -50,19 +46,18 @@ GEN="./autogen.sh --libdir=/usr/local/lib64"
 MBUILD="meson --libdir=/usr/local/lib64 build"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
-ICNV=libiconv-1.16
-LAVF=0.8.2
+LAVF=0.9.1
 
 # Build dependencies, recommended and script-related packages.
 DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel cmake cowsay \
-dbus-1-devel ddcutil doxygen faenza-icon-theme fontconfig-devel freetype2-devel fribidi-devel \
+dbus-1-devel ddcutil doxygen fontconfig-devel freetype2-devel fribidi-devel \
 gcc gcc-c++ geoclue2-devel gettext-tools giflib-devel glib2-devel graphviz-devel gstreamer-devel \
 gstreamer-plugins-base-devel gstreamer-plugins-libav gstreamer-plugins-ugly harfbuzz-devel \
-libdrm-devel libexif-devel libgbm-devel libi2c0-devel libinput-devel libjpeg62-devel \
+libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel libinput-devel libjpeg62-devel \
 libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
 libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
 libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate \
-moonjit-devel nasm openjpeg2-devel pam-devel scim-devel systemd-devel valgrind-devel wmctrl \
+nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel systemd-devel valgrind-devel wmctrl \
 xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
@@ -73,9 +68,12 @@ CLONEPH="git clone https://git.enlightenment.org/apps/ephoto.git"
 CLONERG="git clone https://git.enlightenment.org/apps/rage.git"
 CLONEVI="git clone https://git.enlightenment.org/apps/evisum.git"
 CLONEVE="git clone https://git.enlightenment.org/tools/enventor.git"
+CLONEXP="git clone https://git.enlightenment.org/apps/express.git"
+CLONECR="git clone https://git.enlightenment.org/apps/ecrire.git"
+CLONENT="git clone https://github.com/vtorri/entice"
 
 # ('MN' stands for Meson, 'AT' refers to Autotools)
-PROG_MN="efl terminology enlightenment ephoto evisum rage"
+PROG_MN="efl terminology enlightenment ephoto evisum rage express ecrire entice"
 PROG_AT="enventor"
 
 # ---------
@@ -101,10 +99,10 @@ beep_ok() {
 sel_menu() {
   if [ $INPUT -lt 1 ]; then
     echo
-    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment 24 now"
-    printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment 24"
-    printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild E24 in RELEASE mode"
-    printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild E24 with WAYLAND support"
+    printf "1. $BDG%s $OFF%s\n\n" "INSTALL Enlightenment now"
+    printf "2. $BDG%s $OFF%s\n\n" "Update and REBUILD Enlightenment"
+    printf "3. $BDC%s $OFF%s\n\n" "Update and rebuild Enlightenment in RELEASE mode"
+    printf "4. $BDP%s $OFF%s\n\n" "Update and rebuild Enlightenment with WAYLAND support"
 
     # Hints.
     # 1/2: Plain build with well tested default values.
@@ -131,7 +129,7 @@ bin_deps() {
 
 ls_dir() {
   COUNT=$(ls -d -- */ | wc -l)
-  if [ $COUNT == 7 ]; then
+  if [ $COUNT == 10 ]; then
     printf "$BDG%s $OFF%s\n\n" "All programs have been downloaded successfully."
     sleep 2
   elif [ $COUNT == 0 ]; then
@@ -140,7 +138,7 @@ ls_dir() {
     beep_exit
     exit 1
   else
-    printf "\n$BDY%s %s\n" "WARNING: ONLY $COUNT OF 7 PROGRAMS HAVE BEEN DOWNLOADED!"
+    printf "\n$BDY%s %s\n" "WARNING: ONLY $COUNT OF 10 PROGRAMS HAVE BEEN DOWNLOADED!"
     printf "\n$BDY%s $OFF%s\n\n" "WAIT 12 SECONDS OR HIT CTRL+C TO QUIT."
     sleep 12
   fi
@@ -159,22 +157,23 @@ elap_start() {
 elap_stop() {
   DELTA=$(($(date +%s) - $START))
   printf "\n%s" "Compilation and linking time: "
-  printf ""%dh:%dm:%ds"\n\n" $(($DELTA / 3600)) $(($DELTA % 3600 / 60)) $(($DELTA % 60))
+  eval "echo $(date -ud "@$DELTA" +'%H hr %M min %S sec')"
 }
 
 e_bkp() {
   # Timestamp: See the date man page to convert epoch to human-readable date
   # or visit https://www.epochconverter.com/
+  # To restore a backup, use the same command that was executed but with
+  # the source and destination reversed:
+  # e.g. cp -aR /home/jamie/Documents/ebackups/E_1622439936/.e* /home/jamie/
+  # (Then press Ctrl+Alt+End to restart Enlightenment if you are currently logged into)
+  #
   TSTAMP=$(date +%s)
   mkdir -p $DOCDIR/ebackups
 
-  mkdir $DOCDIR/ebackups/E_$TSTAMP
-  cp -aR $HOME/.elementary $DOCDIR/ebackups/E_$TSTAMP && cp -aR $HOME/.e $DOCDIR/ebackups/E_$TSTAMP
-
-  if [ -d $HOME/.config/terminology ]; then
-    cp -aR $HOME/.config/terminology $DOCDIR/ebackups/Eterm_$TSTAMP
-  fi
-
+  mkdir $DOCDIR/ebackups/E_$TSTAMP &&
+    cp -aR $HOME/.elementary $DOCDIR/ebackups/E_$TSTAMP &&
+    cp -aR $HOME/.e $DOCDIR/ebackups/E_$TSTAMP
   sleep 2
 }
 
@@ -198,28 +197,6 @@ e_tokens() {
       printf "\n$ITA%s $OFF%s\n\n" "(no backup made... OK)"
       ;;
     esac
-  fi
-}
-
-avf_chk() {
-  if [ -d $ESRC/libavif-0.8.0 ]; then
-    printf "\n$BDY%s $OFF%s\n\n" "LIBAVIF NEEDS TO BE UPDATED!"
-    cd $ESRC/libavif-0.8.0/build
-    sudo xargs rm -rf <install_manifest.txt
-    cd ../.. && rm -rf libavif-0.8.0
-
-    cd $DLDIR
-    wget -c https://github.com/AOmediaCodec/libavif/archive/v$LAVF.tar.gz
-    tar xzvf v$LAVF.tar.gz -C $ESRC
-    cd $ESRC/libavif-$LAVF
-    mkdir -p build && cd build
-    cmake .. -DAVIF_CODEC_AOM=ON -DBUILD_SHARED_LIBS=OFF
-    make
-    sudo make install
-    sudo ln -sf /usr/local/lib64/pkgconfig/libavif.pc /usr/lib64/pkgconfig
-    sudo ldconfig
-    rm -rf $DLDIR/v$LAVF.tar.gz
-    echo
   fi
 }
 
@@ -267,7 +244,6 @@ build_plain() {
 
 rebuild_plain() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -336,7 +312,6 @@ rebuild_plain() {
 
 rebuild_optim_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -412,7 +387,6 @@ rebuild_optim_at() {
 
 rebuild_wld_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
-  avf_chk
   bin_deps
   e_tokens
   elap_start
@@ -535,8 +509,8 @@ do_bsh_alias() {
     export LDFLAGS=-L/usr/local/lib64
     export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib64/pkgconfig
 
-    # Parallel build? It's your call...
-    #export MAKE="make -j$(($(nproc) * 2))"
+    # Parallel build.
+    export MAKE="make -j$(($(nproc) * 2))"
 EOF
 
     source $HOME/.bash_aliases
@@ -558,7 +532,7 @@ set_p_src() {
   beep_attention
   # Do not append a trailing slash (/) to the end of the path prefix.
   read -p "Please enter a path to the Enlightenment source folders \
-  (e.g. /home/jamie or /home/jamie/testing): " mypath
+  (e.g. /home/jamie/Documents or /home/jamie/testing): " mypath
   mkdir -p "$mypath"/sources
   ESRC="$mypath"/sources
   echo $ESRC >$HOME/.cache/ebuilds/storepath
@@ -569,29 +543,20 @@ set_p_src() {
 get_preq() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   cd $DLDIR
-  printf "\n\n$BLD%s $OFF%s\n\n" "Installing prerequisites/nice-to-have requirements..."
-  wget -c https://ftp.gnu.org/pub/gnu/libiconv/$ICNV.tar.gz
-  tar xzvf $ICNV.tar.gz -C $ESRC
-  cd $ESRC/$ICNV
-  $CONFG
-  make
-  sudo make install
-  sudo ln -sf /usr/local/lib64/libiconv.so* /usr/lib64
-  sudo ldconfig
-  rm -rf $DLDIR/$ICNV.tar.gz
-  echo
+  printf "\n\n$BLD%s $OFF%s\n\n" "Installing prerequisites..."
 
   cd $ESRC
   git clone https://aomedia.googlesource.com/aom
   cd $ESRC/aom
   mkdir -p aom-build && cd aom-build
+  printf "\n$BLD%s $OFF%s\n" "This may take a while. Please be patient."
   cmake .. -DENABLE_CCACHE=1 -DENABLE_NASM=ON
   make
   sudo make install
   echo
 
   cd $DLDIR
-  wget -c https://github.com/AOmediaCodec/libavif/archive/v$LAVF.tar.gz
+  wget -c https://github.com/AOMediaCodec/libavif/archive/refs/tags/v$LAVF.tar.gz
   tar xzvf v$LAVF.tar.gz -C $ESRC
   cd $ESRC/libavif-$LAVF
   mkdir -p build && cd build
