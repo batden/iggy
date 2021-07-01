@@ -1,4 +1,4 @@
-# iggy
+# iggy - Work in Progress
 
 
 **An easy-to-use Bash script to build and install Enlightenment on openSUSE Leap 15.3**
