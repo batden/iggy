@@ -216,15 +216,18 @@ build_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-        -Dlua-interpreter=luajit Dbindings=cxx build
+        -Dlua-interpreter=luajit Dbindings=cxx \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
-      meson --libdir=/usr/local/lib64 build
+      meson --libdir=/usr/local/lib64 \
+      build
       ninja -C build || mng_err
       ;;
     *)
-      meson --libdir=/usr/local/lib64 build
+      meson --libdir=/usr/local/lib64 \
+      build
       ninja -C build || true
       ;;
     esac
