@@ -216,7 +216,7 @@ build_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-        -Dbindings= build
+        -Dbindings=cxx build
       ninja -C build || mng_err
       ;;
     enlightenment)
@@ -279,7 +279,7 @@ rebuild_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-      -Dbindings= \
+      -Dbindings=cxx \
         build
       meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
