@@ -222,12 +222,12 @@ build_plain() {
       ;;
     enlightenment)
       meson --libdir=/usr/local/lib64 \
-      build
+        build
       ninja -C build || mng_err
       ;;
     *)
       meson --libdir=/usr/local/lib64 \
-      build
+        build
       ninja -C build || true
       ;;
     esac
@@ -262,7 +262,8 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure build
+  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure \
+    build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -282,7 +283,7 @@ rebuild_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-      -Dbindings=cxx \
+        -Dbindings=cxx \
         build
       meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
@@ -334,7 +335,8 @@ rebuild_optim_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release \
+    build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -354,19 +356,21 @@ rebuild_optim_mn() {
       sudo chown $USER build/.ninja*
 
       meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false \
-        -Dbuild-examples=false -Devas-loaders-disabler= -Dbuildtype=release \
+        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
+        -Devas-loaders-disabler= -Dbuildtype=release \
         build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release \
+        build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release \
+        build
       ninja -C build || true
       ;;
     esac
@@ -417,7 +421,8 @@ rebuild_wld_mn() {
   $REBASEF && git pull
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release \
+    build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -439,17 +444,20 @@ rebuild_wld_mn() {
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= \
-        -Dbuildtype=release build
+        -Dbuildtype=release \
+        build
       ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release \
+        build
       ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release \
+        build
       ninja -C build || true
       ;;
     esac
