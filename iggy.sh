@@ -62,7 +62,7 @@ xdotool xorg-x11-devel xorg-x11-server-extra"
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
 CLONETY="git clone https://git.enlightenment.org/apps/terminology.git"
-CLONe25="git clone https://git.enlightenment.org/core/enlightenment.git"
+CLONE25="git clone https://git.enlightenment.org/core/enlightenment.git"
 CLONEPH="git clone https://git.enlightenment.org/apps/ephoto.git"
 CLONERG="git clone https://git.enlightenment.org/apps/rage.git"
 CLONEVI="git clone https://git.enlightenment.org/apps/evisum.git"
