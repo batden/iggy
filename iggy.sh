@@ -351,9 +351,7 @@ rebuild_optim_mn() {
       sudo chown $USER build/.ninja*
 
       meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true
-        
-        -Dbindings=cxx -Dbuild-tests=false \
+        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false \
         -Dbuild-examples=false -Devas-loaders-disabler= -Dbuildtype=release \
         build
       ninja -C build || mng_err
