@@ -56,7 +56,7 @@ libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel libinput-dev
 libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
 libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
 libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel meson mlocate \
-nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel systemd-devel valgrind-devel wmctrl \
+moonjit nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel systemd-devel valgrind-devel wmctrl \
 xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
@@ -216,8 +216,7 @@ build_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-        -Dlua-interpreter=lua -Dbindings= \
-        build
+        -Dbindings= build
       ninja -C build || mng_err
       ;;
     enlightenment)
@@ -280,7 +279,7 @@ rebuild_plain() {
     case $I in
     efl)
       meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-        -Dlua-interpreter=lua -Dbindings= \
+      -Dbindings= \
         build
       meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
