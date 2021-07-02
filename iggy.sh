@@ -56,8 +56,8 @@ libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel libinput-dev
 libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
 libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
 libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel \
-meson mlocate nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel systemd-devel \
-valgrind-devel wmctrl xdotool xorg-x11-devel xorg-x11-server-extra"
+meson mlocate moonjit-devel nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel \
+systemd-devel valgrind-devel wmctrl xdotool xorg-x11-devel xorg-x11-server-extra"
 
 # Latest development code.
 CLONEFL="git clone https://git.enlightenment.org/core/efl.git"
