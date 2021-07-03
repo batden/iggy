@@ -258,7 +258,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure build
+  meson --libdir=/usr/local/lib64 --reconfigure build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -591,7 +591,7 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  meson --libdir=/usr/local/lib64 -Dexample=false build
+  meson --libdir=/usr/local/lib64 build
   ninja -C build || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
