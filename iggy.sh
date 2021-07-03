@@ -258,8 +258,7 @@ rebuild_plain() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
-  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure \
-    build
+  meson --libdir=/usr/local/lib64 -Dexample=false --reconfigure build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -278,9 +277,6 @@ rebuild_plain() {
 
     case $I in
     efl)
-      meson --libdir=/usr/local/lib64 -Dbuild-examples=false -Dbuild-tests=false \
-        -Dbindings=cxx \
-        build
       meson --libdir=/usr/local/lib64 build
       ninja -C build || mng_err
       ;;
