@@ -378,7 +378,6 @@ rebuild_wld_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build
   echo
   sudo chown $USER build/.ninja*
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
