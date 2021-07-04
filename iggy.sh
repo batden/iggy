@@ -582,8 +582,8 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  meson --libdir=/usr/local/lib64 build
-  ninja -C build || true
+  meson --libdir=/usr/local/lib64 build/
+  ninja -C build/ || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
   sudo ldconfig
