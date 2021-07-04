@@ -257,8 +257,9 @@ rebuild_plain() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
+  rm -rf build/
   echo
-  meson --libdir=/usr/local/lib64 --reconfigure build/
+  meson --libdir=/usr/local/lib64 build/
   ninja -C build/ || true
   $SNIN || true
   sudo ldconfig
@@ -325,6 +326,7 @@ rebuild_optim_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
+  rm -rf build/
   echo
   sudo chown $USER build/.ninja*
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build/
@@ -339,9 +341,11 @@ rebuild_optim_mn() {
 
     cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
-    $REBASEF && git reset --hard &>/dev/null
-    git pull
-
+    git reset --hard &>/dev/null
+    $REBASEF && git pull
+    rm -rf build/
+    echo
+    
     case $I in
     efl)
       sudo chown $USER build/.ninja*
@@ -381,7 +385,7 @@ rebuild_optim_at() {
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
     $REBASEF && git pull
-
+    echo
     $GEN
     make || true
     beep_attention
@@ -407,6 +411,7 @@ rebuild_wld_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
+  rm -rf build/
   echo
   sudo chown $USER build/.ninja*
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build/
@@ -423,6 +428,7 @@ rebuild_wld_mn() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
+    rm -rf build/
 
     case $I in
     efl)
@@ -465,7 +471,7 @@ rebuild_wld_at() {
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
     $REBASEF && git pull
-
+    echo
     $GEN
     make || true
     beep_attention
