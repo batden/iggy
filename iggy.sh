@@ -246,9 +246,8 @@ rebuild_plain() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build
   echo
-  meson --libdir=/usr/local/lib64 build
+  meson --libdir=/usr/local/lib64 --reconfigure -Dexample=false build
   ninja -C build || true
   $SNIN || true
   sudo ldconfig
@@ -306,7 +305,6 @@ rebuild_optim_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build
   echo
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
@@ -318,7 +316,6 @@ rebuild_optim_mn() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
-    rm -rf build
     echo
     
     case $I in
@@ -394,7 +391,6 @@ rebuild_wld_mn() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
-    rm -rf build
 
     case $I in
     efl)
