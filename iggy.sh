@@ -149,16 +149,6 @@ mng_err() {
   exit 1
 }
 
-elap_start() {
-  START=$(date +%s)
-}
-
-elap_stop() {
-  DELTA=$(($(date +%s) - $START))
-  printf "\n%s" "Compilation and linking time: "
-  eval "echo $(date -ud "@$DELTA" +'%H hr %M min %S sec')"
-}
-
 e_bkp() {
   # Timestamp: See the date man page to convert epoch to human-readable date
   # or visit https://www.epochconverter.com/
@@ -251,7 +241,6 @@ rebuild_plain() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   bin_deps
   e_tokens
-  elap_start
 
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
@@ -264,11 +253,7 @@ rebuild_plain() {
   $SNIN || true
   sudo ldconfig
 
-  elap_stop
-
   for I in $PROG_MN; do
-    elap_start
-
     cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
@@ -294,12 +279,9 @@ rebuild_plain() {
     beep_attention
     $SNIN || true
     sudo ldconfig
-
-    elap_stop
   done
 
   for I in $PROG_AT; do
-    elap_start
     cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
@@ -312,7 +294,6 @@ rebuild_plain() {
     beep_attention
     $SMIL || true
     sudo ldconfig
-    elap_stop
   done
 }
 
@@ -320,7 +301,6 @@ rebuild_optim_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   bin_deps
   e_tokens
-  elap_start
 
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
@@ -334,11 +314,7 @@ rebuild_optim_mn() {
   $SNIN || true
   sudo ldconfig
 
-  elap_stop
-
   for I in $PROG_MN; do
-    elap_start
-
     cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
@@ -369,8 +345,6 @@ rebuild_optim_mn() {
 
     $SNIN || true
     sudo ldconfig
-
-    elap_stop
   done
 }
 
@@ -378,7 +352,6 @@ rebuild_optim_at() {
   export CFLAGS="-O2 -ffast-math -march=native"
 
   for I in $PROG_AT; do
-    elap_start
     cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
@@ -391,7 +364,6 @@ rebuild_optim_at() {
     beep_attention
     $SMIL || true
     sudo ldconfig
-    elap_stop
   done
 }
 
@@ -405,7 +377,6 @@ rebuild_wld_mn() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   bin_deps
   e_tokens
-  elap_start
 
   cd $ESRC/rlottie
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
@@ -419,11 +390,7 @@ rebuild_wld_mn() {
   $SNIN || true
   sudo ldconfig
 
-  elap_stop
-
   for I in $PROG_MN; do
-    elap_start
-
     cd $ESRC/e25/$I
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
@@ -455,8 +422,6 @@ rebuild_wld_mn() {
     sudo ln -sf /usr/local/lib64/pkgconfig/* /usr/lib64/pkgconfig
     sudo ln -sf /usr/local/lib64/lib* /usr/lib64
     sudo ldconfig
-
-    elap_stop
   done
 }
 
@@ -464,7 +429,6 @@ rebuild_wld_at() {
   export CFLAGS="-O2 -ffast-math -march=native"
 
   for I in $PROG_AT; do
-    elap_start
     cd $ESRC/e25/$I
 
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
@@ -477,7 +441,6 @@ rebuild_wld_at() {
     beep_attention
     $SMIL || true
     sudo ldconfig
-    elap_stop
   done
 }
 
