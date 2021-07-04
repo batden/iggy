@@ -306,7 +306,7 @@ rebuild_plain() {
     sudo make distclean &>/dev/null
     git reset --hard &>/dev/null
     $REBASEF && git pull
-
+    echo
     $GEN
     make || true
     beep_attention
