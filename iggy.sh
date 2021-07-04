@@ -205,16 +205,16 @@ build_plain() {
 
     case $I in
     efl)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || mng_err
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || mng_err
       ;;
     enlightenment)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || mng_err
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || mng_err
       ;;
     *)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || true
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || true
       ;;
     esac
 
@@ -246,10 +246,10 @@ rebuild_plain() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build/
+  rm -rf build
   echo
-  meson --libdir=/usr/local/lib64 build/
-  ninja -C build/ || true
+  meson --libdir=/usr/local/lib64 build
+  ninja -C build || true
   $SNIN || true
   sudo ldconfig
 
@@ -258,21 +258,21 @@ rebuild_plain() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
-    rm -rf build/
+    rm -rf build
     echo
 
     case $I in
     efl)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || mng_err
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || mng_err
       ;;
     enlightenment)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || mng_err
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || mng_err
       ;;
     *)
-      meson --libdir=/usr/local/lib64 build/
-      ninja -C build/ || true
+      meson --libdir=/usr/local/lib64 build
+      ninja -C build || true
       ;;
     esac
 
@@ -306,11 +306,11 @@ rebuild_optim_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build/
+  rm -rf build
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build/
-  ninja -C build/ || true
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  ninja -C build || true
   $SNIN || true
   sudo ldconfig
 
@@ -319,27 +319,27 @@ rebuild_optim_mn() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
-    rm -rf build/
+    rm -rf build
     echo
     
     case $I in
     efl)
-      sudo chown $USER build/.ninja*
+      sudo chown $USER build.ninja*
 
       meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler= -Dbuildtype=release build/
-      ninja -C build/ || mng_err
+        -Devas-loaders-disabler= -Dbuildtype=release build
+      ninja -C build || mng_err
       ;;
     enlightenment)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build/
-      ninja -C build/ || mng_err
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      ninja -C build || mng_err
       ;;
     *)
       sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build/
-      ninja -C build/ || true
+      meson configure --libdir=/usr/local/lib64 configure -Dbuildtype=release build
+      ninja -C build || true
       ;;
     esac
 
@@ -382,11 +382,11 @@ rebuild_wld_mn() {
   printf "\n$BLD%s $OFF%s\n\n" "Updating rlottie..."
   git reset --hard &>/dev/null
   $REBASEF && git pull
-  rm -rf build/
+  rm -rf build
   echo
   sudo chown $USER build/.ninja*
-  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build/
-  ninja -C build/ || true
+  meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
+  ninja -C build || true
   $SNIN || true
   sudo ldconfig
 
@@ -395,7 +395,7 @@ rebuild_wld_mn() {
     printf "\n$BLD%s $OFF%s\n\n" "Updating $I..."
     git reset --hard &>/dev/null
     $REBASEF && git pull
-    rm -rf build/
+    rm -rf build
 
     case $I in
     efl)
@@ -403,18 +403,18 @@ rebuild_wld_mn() {
       meson configure --libdir=/usr/local/lib64 configure -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
-        -Devas-loaders-disabler= -Dbuildtype=release build/
-      ninja -C build/ || mng_err
+        -Devas-loaders-disabler= -Dbuildtype=release build
+      ninja -C build || mng_err
       ;;
     enlightenment)
-      sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build/
-      ninja -C build/ || mng_err
+      sudo chown $USER build.ninja*
+      meson configure --libdir=/usr/local/lib64 configure -Dwl=true -Dbuildtype=release build
+      ninja -C build || mng_err
       ;;
     *)
-      sudo chown $USER build/.ninja*
-      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build/
-      ninja -C build/ || true
+      sudo chown $USER build.ninja*
+      meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
+      ninja -C build || true
       ;;
     esac
 
@@ -551,8 +551,8 @@ get_preq() {
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
   cd $ESRC/rlottie
-  meson --libdir=/usr/local/lib64 build/
-  ninja -C build/ || true
+  meson --libdir=/usr/local/lib64 build
+  ninja -C build || true
   $SNIN || true
   sudo ln -sf /usr/local/lib64/pkgconfig/rlottie.pc /usr/lib64/pkgconfig
   sudo ldconfig
