@@ -317,7 +317,7 @@ rebuild_optim_mn() {
     git reset --hard &>/dev/null
     $REBASEF && git pull
     echo
-    
+
     case $I in
     efl)
       sudo chown $USER build.ninja*
