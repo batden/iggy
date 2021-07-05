@@ -321,7 +321,6 @@ rebuild_optim_mn() {
     case $I in
     efl)
       sudo chown $USER build.ninja*
-
       meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= -Dbuildtype=release build
