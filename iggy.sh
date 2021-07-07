@@ -17,9 +17,7 @@
 # However, because software gains entropy over time (performance regression, unexpected
 # behavior... and this is especially true when dealing directly with source code), we
 # highly recommend doing a complete uninstall and reinstall of your Enlightenment
-# desktop every three weeks or so for an optimal user experience. Follow the
-# same steps (uninstall before upgrading...) if you plan to upgrade your
-# current system to a newer version of openSUSE.
+# desktop every three weeks or so for an optimal user experience.
 
 # IGGY.SH is written and maintained by carlasensa@sfr.fr and batden@sfr.fr,
 # feel free to use this script as you see fit.
