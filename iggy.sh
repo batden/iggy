@@ -45,17 +45,17 @@ CONFG="./configure --libdir=/usr/local/lib64"
 GEN="./autogen.sh --libdir=/usr/local/lib64"
 SNIN="sudo ninja -C build install"
 SMIL="sudo make install"
-LAVF=0.9.1
 
 # Build dependencies, recommended and script-related packages.
 DEPS="acpid alsa-devel aspell autoconf automake bluez-devel ccache check-devel cmake cowsay \
 dbus-1-devel ddcutil doxygen fontconfig-devel freetype2-devel fribidi-devel \
 gcc gcc-c++ geoclue2-devel gettext-tools giflib-devel glib2-devel graphviz-devel gstreamer-devel \
 gstreamer-plugins-base-devel gstreamer-plugins-libav gstreamer-plugins-ugly harfbuzz-devel \
-libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel libinput-devel libjpeg62-devel \
-libmount-devel libpng16-compat-devel libopenssl-devel libpoppler-devel libspectre-devel \
-libpulse-devel libraw-devel librsvg-devel libsndfile-devel libspectre-devel libtiff-devel \
-libtool libudev-devel libwebp-devel libxkbcommon-x11-devel Mesa-libGLESv2-devel \
+libaom-devel libavif-devel libdrm-devel libexif-devel libgbm-devel libheif-devel libi2c0-devel \
+libinput-devel libjpeg62-devel libmount-devel libpng16-compat-devel libopenssl-devel \
+libpoppler-devel libspectre-devel libpulse-devel libraw-devel librsvg-devel libsndfile-devel \
+libspectre-devel libtiff-devel libtool libudev-devel libwebp-devel libxkbcommon-x11-devel \
+Mesa-libGLESv2-devel \
 meson mlocate moonjit-devel nasm openjpeg2-devel pam-devel papirus-icon-theme scim-devel \
 systemd-devel valgrind-devel wmctrl xdotool xorg-x11-devel xorg-x11-server-extra"
 
@@ -517,29 +517,6 @@ get_preq() {
   ESRC=$(cat $HOME/.cache/ebuilds/storepath)
   cd $DLDIR
   printf "\n\n$BLD%s $OFF%s\n\n" "Installing prerequisites..."
-
-  cd $ESRC
-  git clone https://aomedia.googlesource.com/aom
-  cd $ESRC/aom
-  mkdir -p aom-build && cd aom-build
-  printf "\n$BLD%s $OFF%s\n" "This may take a while. Please be patient."
-  cmake .. -DENABLE_CCACHE=1 -DENABLE_NASM=ON
-  make
-  sudo make install
-  echo
-
-  cd $DLDIR
-  wget -c https://github.com/AOMediaCodec/libavif/archive/refs/tags/v$LAVF.tar.gz
-  tar xzvf v$LAVF.tar.gz -C $ESRC
-  cd $ESRC/libavif-$LAVF
-  mkdir -p build && cd build
-  cmake .. -DAVIF_CODEC_AOM=ON -DBUILD_SHARED_LIBS=OFF
-  make
-  sudo make install
-  sudo ln -sf /usr/local/lib64/pkgconfig/libavif.pc /usr/lib64/pkgconfig
-  sudo ldconfig
-  rm -rf $DLDIR/v$LAVF.tar.gz
-  echo
 
   cd $ESRC
   git clone https://github.com/Samsung/rlottie.git
