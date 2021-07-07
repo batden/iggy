@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This Bash script allows you to easily and safely install Enlightenment along with other
-# EFL-based applications, on openSUSE Leap 15.3.
+# EFL-based applications, on openSUSE Tumbleweed.
 
 # Note that you need a properly configured 'sudo' to execute this script.
 # See README.md for further instructions on how to use IGGY.SH.
