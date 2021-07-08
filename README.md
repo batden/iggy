@@ -1,7 +1,7 @@
 # iggy - Work in Progress
 
 
-**An easy-to-use Bash script to build and install Enlightenment on openSUSE Tumbleweed**
+**An easy-to-use Bash script to build and install Enlightenment on openSUSE Tumbleweed.**
 
 See also [erode.sh](https://github.com/sensamillion/erode)
 
