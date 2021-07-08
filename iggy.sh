@@ -318,7 +318,7 @@ rebuild_optim_mn() {
     case $I in
     efl)
       meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true -Dbindings=cxx -Dbuild-tests=false -Dbuild-examples=false \
+        -Dharfbuzz=true -Dlua-interpreter=luajit -Delua=true -Dbindings=luajit,cxx -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
@@ -386,7 +386,7 @@ rebuild_wld_mn() {
     case $I in
     efl)
       meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
-        -Dharfbuzz=true -Dbindings=cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
+        -Dharfbuzz=true -Dlua-interpreter=luajit -Delua=true -Dbindings=luajit,cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= -Dbuildtype=release build
       ninja -C build || mng_err
