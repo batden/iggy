@@ -1,4 +1,4 @@
-# iggy - Work in Progress
+# iggy
 
 
 **An easy-to-use Bash script to build and install Enlightenment on openSUSE Tumbleweed.**
