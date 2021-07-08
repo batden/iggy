@@ -303,6 +303,7 @@ rebuild_optim_mn() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
+  sudo chown $USER build/.ninja*
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
@@ -317,16 +318,19 @@ rebuild_optim_mn() {
 
     case $I in
     efl)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dlua-interpreter=luajit -Delua=true -Dbindings=luajit,cxx -Dbuild-tests=false -Dbuild-examples=false \
         -Devas-loaders-disabler= -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     enlightenment)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
       ninja -C build || true
       ;;
@@ -372,6 +376,7 @@ rebuild_wld_mn() {
   git reset --hard &>/dev/null
   $REBASEF && git pull
   echo
+  sudo chown $USER build/.ninja*
   meson configure --libdir=/usr/local/lib64 -Dexample=false -Dbuildtype=release build
   ninja -C build || true
   $SNIN || true
@@ -385,6 +390,7 @@ rebuild_wld_mn() {
 
     case $I in
     efl)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dnative-arch-optimization=true -Dfb=true \
         -Dharfbuzz=true -Dlua-interpreter=luajit -Delua=true -Dbindings=luajit,cxx -Ddrm=true -Dwl=true -Dopengl=es-egl \
         -Dbuild-tests=false -Dbuild-examples=false \
@@ -392,10 +398,12 @@ rebuild_wld_mn() {
       ninja -C build || mng_err
       ;;
     enlightenment)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dwl=true -Dbuildtype=release build
       ninja -C build || mng_err
       ;;
     *)
+      sudo chown $USER build/.ninja*
       meson configure --libdir=/usr/local/lib64 -Dbuildtype=release build
       ninja -C build || true
       ;;
